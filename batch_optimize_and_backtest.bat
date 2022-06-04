@@ -12,6 +12,9 @@ set B="%Yr%-%Mon%-%Day%_(%Hr%-%Min%-%Sec%)"
 if not exist "user_script_results" mkdir user_script_results
 mkdir user_script_results\%B%
 
+if not exist "user_backtesting_results" mkdir user_backtesting_results
+mkdir user_backtesting_results\%B%
+
 for %%S in (Strategy005) do (
     for %%Y in (5m) do (
         for %%X in (SharpeHyperOptLossDaily ) DO (

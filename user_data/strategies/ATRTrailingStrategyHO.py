@@ -16,13 +16,13 @@ import json
 #                         MaxDrawDownRelativeHyperOptLoss,
 #                         ProfitDrawDownHyperOptLoss
 try:
+    print(os.listdir('./'))
     f = open('user_data/strategies/ATRTrailingStrategy.json')
 except:
     print("error opening file")
-    exit(1)
 
 data = json.load(f)
-class ATRStrategy(IStrategy):
+class ATRStrategyHO(IStrategy):
     INTERFACE_VERSION = 2
 
     # Minimal ROI designed for the strategy.
@@ -46,16 +46,16 @@ class ATRStrategy(IStrategy):
 
     # Buy hyperspace params:
     buy_params = {
-        "buy_atr_period": data['params']['buy']['buy_atr_period'],
-        "buy_hhv": data['params']['buy']['buy_hhv'],
-        "buy_mult": data['params']['buy']['buy_mult'],
+        "buy_atr_period": 62,
+        "buy_hhv": 146,
+        "buy_mult": 0.396,
     }
 
     # Sell hyperspace params:
     sell_params = {
-        "sell_atr_period": data['params']['sell']['sell_atr_period'],
-        "sell_hhv": data['params']['sell']['sell_hhv'],
-        "sell_mult": data['params']['sell']['sell_mult'],
+        "sell_atr_period": 121,
+        "sell_hhv": 142,
+        "sell_mult": 8.605,
     }
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
@@ -75,6 +75,7 @@ class ATRStrategy(IStrategy):
         """
 
         try:
+            print(self.buy_hhv.value)
             prev = ta.MAX(
                 dataframe['high'].sub(self.buy_mult.value * dataframe['atr']).squeeze(),
                 (self.buy_hhv.value.item() if hasattr(self.buy_hhv.value, 'item') else self.buy_hhv.value)

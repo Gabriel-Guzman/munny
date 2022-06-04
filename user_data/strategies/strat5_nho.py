@@ -71,17 +71,17 @@ class Strategy005(IStrategy):
 
     # Buy hyperspace params:
     buy_params = {
-        "buy_fastd": 98,
-        "buy_fishRsiNorma": 81,
-        "buy_rsi": 10,
-        "buy_volumeAVG": 125,
+        "buy_fastd": 23,
+        "buy_fishRsiNorma": 70,
+        "buy_rsi": 14,
+        "buy_volumeAVG": 163,
     }
 
     # Sell hyperspace params:
     sell_params = {
-        "sell_fishRsiNorma": 79,
-        "sell_minusDI": 44,
-        "sell_rsi": 12,
+        "sell_fishRsiNorma": 73,
+        "sell_minusDI": 51,
+        "sell_rsi": 19,
         "sell_trigger": "rsi-macd-minusdi",
     }
 
