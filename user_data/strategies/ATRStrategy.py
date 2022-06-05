@@ -15,13 +15,7 @@ import json
 #                         CalmarHyperOptLoss, MaxDrawDownHyperOptLoss,
 #                         MaxDrawDownRelativeHyperOptLoss,
 #                         ProfitDrawDownHyperOptLoss
-try:
-    f = open('user_data/strategies/ATRTrailingStrategy.json')
-except:
-    print("error opening file")
-    exit(1)
 
-data = json.load(f)
 class ATRStrategy(IStrategy):
     INTERFACE_VERSION = 2
 
@@ -35,6 +29,14 @@ class ATRStrategy(IStrategy):
     # Optimal timeframe for the strategy
     timeframe = '5m'
 
+    minimal_roi = {
+        "1440": 0.01,
+        "80": 0.02,
+        "40": 0.03,
+        "20": 0.04,
+        "0": 0.05
+    }
+
     # begin atr trailing
     buy_atr_period = IntParameter(low=1, high=150, default=5, space='buy', optimize=True)
     buy_hhv = IntParameter(low=2, high=150, default=10, space='buy', optimize=True)
@@ -46,16 +48,16 @@ class ATRStrategy(IStrategy):
 
     # Buy hyperspace params:
     buy_params = {
-        "buy_atr_period": data['params']['buy']['buy_atr_period'],
-        "buy_hhv": data['params']['buy']['buy_hhv'],
-        "buy_mult": data['params']['buy']['buy_mult'],
+        "buy_atr_period": 5,
+        "buy_hhv": 10,
+        "buy_mult": 2.5,
     }
 
     # Sell hyperspace params:
     sell_params = {
-        "sell_atr_period": data['params']['sell']['sell_atr_period'],
-        "sell_hhv": data['params']['sell']['sell_hhv'],
-        "sell_mult": data['params']['sell']['sell_mult'],
+        "sell_atr_period": 5,
+        "sell_hhv": 10,
+        "sell_mult": 2.5,
     }
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:

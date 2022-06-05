@@ -16,12 +16,15 @@ import json
 #                         MaxDrawDownRelativeHyperOptLoss,
 #                         ProfitDrawDownHyperOptLoss
 try:
-    print(os.listdir('./'))
-    f = open('user_data/strategies/ATRTrailingStrategy.json')
+    if os.path.exists('user_data/strategies/ATRStrategyHO.json'):
+        f = open('user_data/strategies/ATRStrategyHO.json')
+        data = json.load(f)
+    else:
+        data = None
 except:
     print("error opening file")
+    data = None
 
-data = json.load(f)
 class ATRStrategyHO(IStrategy):
     INTERFACE_VERSION = 2
 
@@ -35,6 +38,13 @@ class ATRStrategyHO(IStrategy):
     # Optimal timeframe for the strategy
     timeframe = '5m'
 
+    minimal_roi = {
+        "60": 0.01,
+        "30": 0.03,
+        "20": 0.04,
+        "0": 0.05
+    }
+
     # begin atr trailing
     buy_atr_period = IntParameter(low=1, high=150, default=5, space='buy', optimize=True)
     buy_hhv = IntParameter(low=2, high=150, default=10, space='buy', optimize=True)
@@ -46,16 +56,16 @@ class ATRStrategyHO(IStrategy):
 
     # Buy hyperspace params:
     buy_params = {
-        "buy_atr_period": 62,
-        "buy_hhv": 146,
-        "buy_mult": 0.396,
+        "buy_atr_period": data['params']['buy']['buy_atr_period'] if data is not None else 62,
+        "buy_hhv": data['params']['buy']['buy_hhv'] if data is not None else 146,
+        "buy_mult": data['params']['buy']['buy_mult'] if data is not None else 0.396,
     }
 
     # Sell hyperspace params:
     sell_params = {
-        "sell_atr_period": 121,
-        "sell_hhv": 142,
-        "sell_mult": 8.605,
+        "sell_atr_period": data['params']['sell']['sell_atr_period'] if data is not None else 121,
+        "sell_hhv": data['params']['sell']['sell_hhv'] if data is not None else 142,
+        "sell_mult": data['params']['sell']['sell_mult'] if data is not None else 8.605,
     }
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
@@ -75,7 +85,6 @@ class ATRStrategyHO(IStrategy):
         """
 
         try:
-            print(self.buy_hhv.value)
             prev = ta.MAX(
                 dataframe['high'].sub(self.buy_mult.value * dataframe['atr']).squeeze(),
                 (self.buy_hhv.value.item() if hasattr(self.buy_hhv.value, 'item') else self.buy_hhv.value)

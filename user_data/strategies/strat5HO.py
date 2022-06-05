@@ -8,9 +8,20 @@ from pandas import DataFrame
 import talib.abstract as ta
 import freqtrade.vendor.qtpylib.indicators as qtpylib
 import numpy # noqa
+import json
+import os
 
+try:
+    if os.path.exists('user_data/strategies/strat5HO.json'):
+        f = open('user_data/strategies/strat5HO.json')
+        data = json.load(f)
+    else:
+        data = None
+except:
+    print("error opening file")
+    data = None
 
-class Strategy005(IStrategy):
+class Strategy005HO(IStrategy):
     """
     Strategy 005
     author@: Gerald Lonlas
@@ -71,18 +82,18 @@ class Strategy005(IStrategy):
 
     # Buy hyperspace params:
     buy_params = {
-        "buy_fastd": 23,
-        "buy_fishRsiNorma": 70,
-        "buy_rsi": 14,
-        "buy_volumeAVG": 163,
+        "buy_fastd": data['params']['buy']['buy_fastd'] if data is not None else 98,
+        "buy_fishRsiNorma": data['params']['buy']['buy_fishRsiNorma'] if data is not None else 81,
+        "buy_rsi": data['params']['buy']['buy_rsi'] if data is not None else 10,
+        "buy_volumeAVG": data['params']['buy']['buy_volumeAVG'] if data is not None else 125,
     }
 
     # Sell hyperspace params:
     sell_params = {
-        "sell_fishRsiNorma": 73,
-        "sell_minusDI": 51,
-        "sell_rsi": 19,
-        "sell_trigger": "rsi-macd-minusdi",
+        "sell_fishRsiNorma": data['params']['sell']['sell_fishRsiNorma'] if data is not None else 79,
+        "sell_minusDI": data['params']['sell']['sell_minusDI'] if data is not None else 44,
+        "sell_rsi": data['params']['sell']['sell_rsi'] if data is not None else 12,
+        "sell_trigger": data['params']['sell']['sell_trigger'] if data is not None else 'rsi-macd-minusid',
     }
 
     def informative_pairs(self):
