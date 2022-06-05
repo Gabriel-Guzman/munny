@@ -27,12 +27,12 @@ class RSIDirectionalWithTrendSlow(IStrategy):
     # Minimal ROI designed for the strategy.
     # This attribute will be overridden if the config file contains "minimal_roi"
 
-    # timeframe_mins = timeframe_to_minutes(timeframe)
-    # minimal_roi = {
-    #     "0": 0.08,                       # 5% for the first 3 candles
-    #     str(timeframe_mins * 12): 0.04,  # 2% after 3 candles
-    #     str(timeframe_mins * 24): 0.02,  # 1% After 6 candles
-    # }
+    timeframe_mins = timeframe_to_minutes(timeframe)
+    minimal_roi = {
+        "0": 0.08,                       # 5% for the first 3 candles
+        str(timeframe_mins * 12): 0.04,  # 2% after 3 candles
+        str(timeframe_mins * 24): 0.02,  # 1% After 6 candles
+    }
 
     # This attribute will be overridden if the config file contains "stoploss"
     stoploss = -0.2

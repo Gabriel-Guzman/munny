@@ -6,9 +6,21 @@ from pandas import DataFrame
 # --------------------------------
 
 import talib.abstract as ta
+import os
+import json
+
+try:
+    if os.path.exists('user_data/strategies/MACDStrategyHO.json'):
+        f = open('user_data/strategies/MACDStrategyHO.json')
+        data = json.load(f)
+    else:
+        data = None
+except:
+    print("error opening file")
+    data = None
 
 
-class MACDStrategy(IStrategy):
+class MACDStrategyHO(IStrategy):
     """
     author@: Gert Wohlgemuth
 
@@ -52,12 +64,12 @@ class MACDStrategy(IStrategy):
 
     # Buy hyperspace params:
     buy_params = {
-        "buy_cci": -48,
+        "buy_cci": data['params']['buy']['buy_cci'] if data is not None else -5,
     }
 
     # Sell hyperspace params:
     sell_params = {
-        "sell_cci": 687,
+        "sell_cci": data['params']['sell']['sell_cci'] if data is not None else 310,
     }
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:

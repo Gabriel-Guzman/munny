@@ -8,3 +8,5 @@ user_data/hyperopt.lock
 user_data/tradesv3.sqlite
 user_data/logs/*
 user_data/strategies/*.json
+user_script_results/*
+user_backtesting_results/*
