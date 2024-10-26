@@ -1,0 +1,1 @@
+this repository offers a simple preconfigured project using freqtrade to test trading strategies against historyical crypto data. the batch scripts at the root are simple utilities for comparing multiple at a time.
